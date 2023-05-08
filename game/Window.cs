@@ -112,7 +112,7 @@ public class Window : GameWindow {
         _shader = new Shader("../../../Shaders/shader.vert", "../../../Shaders/lighting.frag");
         _lampShader = new Shader("../../../Shaders/shader.vert", "../../../Shaders/shader.frag");
 
-        _texture = Texture.LoadFromFile("../../../Textures/duck.jpg");
+        _texture = Texture.LoadFromFile("../../../Textures/mercury.jpg");
 
         _camera = new Camera(new Vector3(0.0f, 5.0f, 13.0f), Size.X / (float)Size.Y);
 
@@ -122,10 +122,8 @@ public class Window : GameWindow {
             _figures.Add(new Mesh(_shader, "../../../Objects/sphere.obj", _texture));
         }
 
-        // var tex1 = Texture.LoadFromFile("../../../Textures/duck.jpg");
-        // var tex2 = Texture.LoadFromFile("../../../Textures/box.png");
-        // _figures.Add(new Mesh(_shader, "../../../Objects/sphere.obj", tex1));
-        // _figures.Add(new Mesh(_shader, "../../../Objects/cube.obj", tex2));
+        // different texture example
+        _figures[0] = new Mesh(_shader, "../../../Objects/sphere.obj", Texture.LoadFromFile("../../../Textures/duck.jpg"));
 
         // Create lights meshes
         foreach (var _ in _pointLightPositions) {

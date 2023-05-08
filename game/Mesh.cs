@@ -94,6 +94,7 @@ public class Mesh {
     public void Draw(Camera camera, Matrix4? model = null) {
         _shader.Use();
 
+        // Error while binding texture: UNSUPPORTED (log once): POSSIBLE ISSUE: unit 1 GLD_TEXTURE_INDEX_2D is unloadable and bound to sampler type (Float) - using zero texture because texture unloadable
         _texture?.Use(TextureUnit.Texture0);
 
         _shader.SetMatrix4("model", model ?? Matrix4.Identity);

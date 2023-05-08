@@ -48,7 +48,6 @@ uniform DirLight dirLight;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform SpotLight spotLight;
 uniform vec3 viewPosition;
-uniform sampler2D texture0;
 
 out vec4 FragColor;
 
