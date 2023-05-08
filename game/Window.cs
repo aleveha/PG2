@@ -1,7 +1,6 @@
-﻿using System.Drawing;
+﻿namespace Game;
 
-namespace Game;
-
+using System.Drawing;
 using System.Timers;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -83,7 +82,7 @@ public class Window : GameWindow {
 
     private int _frames;
     private readonly Timer _timer = new() { Interval = 1000, AutoReset = true, Enabled = true };
-
+    
     private readonly List<Mesh> _figures = new();
     private readonly List<Mesh> _lights = new();
 
@@ -152,6 +151,9 @@ public class Window : GameWindow {
             var model = Matrix4.CreateScale(0.4f);
             model *= Matrix4.CreateTranslation(_objectsPositions[i] * 1.5f);
             _figures[i].Draw(_camera, model);
+
+            _objectsPositions[i] = Vector3.Transform(_objectsPositions[i],
+                Quaternion.FromAxisAngle(Vector3.UnitY, (float)e.Time / 3));
         }
 
         // Draw lights
