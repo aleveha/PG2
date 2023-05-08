@@ -106,6 +106,18 @@ public class Mesh {
         GL.DrawArrays(PrimitiveType.Triangles, 0, _vertices.Count);
         GL.BindVertexArray(0);
     }
+    
+    public void Dispose() {
+        GL.DeleteVertexArray(_vao);
+        GL.DeleteBuffer(_vbo);
+        
+        GL.BindVertexArray(0);
+        GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+        GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+        
+        GL.BindVertexArray(0);
+        GL.UseProgram(0);
+    }
 
     private static Tuple<List<Vector3>, List<Vector2>, List<Vector3>> ParseObjFile(string path) {
         var vertexIndices = new List<uint>();

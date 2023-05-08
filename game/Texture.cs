@@ -38,4 +38,8 @@ public class Texture {
         GL.ActiveTexture(unit);
         GL.BindTexture(TextureTarget.Texture2D, _handle);
     }
+    
+    public void Dispose() {
+        GL.DeleteTexture(_handle);
+    }
 }

@@ -75,7 +75,7 @@ public class Window : GameWindow {
     private Shader _lampShader;
 
     private Texture _texture;
-    
+
     private AudioPlayer _audioPlayer;
 
     private Camera _camera;
@@ -84,7 +84,7 @@ public class Window : GameWindow {
 
     private int _frames;
     private readonly Timer _timer = new() { Interval = 1000, AutoReset = true, Enabled = true };
-    
+
     private readonly List<Mesh> _figures = new();
     private readonly List<Mesh> _lights = new();
 
@@ -97,7 +97,7 @@ public class Window : GameWindow {
         base.OnLoad();
 
         // Set the clear color.
-        GL.ClearColor(Color.DimGray);
+        GL.ClearColor(Color.Black);
 
         // Enable face culling.
         GL.CullFace(CullFaceMode.Back);
@@ -125,13 +125,14 @@ public class Window : GameWindow {
         }
 
         // different texture example
-        _figures[0] = new Mesh(_shader, "../../../Objects/sphere.obj", Texture.LoadFromFile("../../../Textures/duck.jpg"));
+        _figures[0] = new Mesh(_shader, "../../../Objects/sphere.obj",
+            Texture.LoadFromFile("../../../Textures/duck.jpg"));
 
         // Create lights meshes
         foreach (var _ in _pointLightPositions) {
             _lights.Add(new Mesh(_lampShader, "../../../Objects/sphere.obj"));
         }
-        
+
         // AudioPlayer init
         _audioPlayer = new AudioPlayer();
         _audioPlayer.Load("../../../Music/Background.wav");
@@ -140,10 +141,20 @@ public class Window : GameWindow {
         // Swap front and back buffers.
         SwapBuffers();
     }
-    
+
     protected override void OnUnload() {
-        // тут напиши своё а я остальное добавлю
+        foreach (var figure in _figures) {
+            figure.Dispose();
+        }
+        
+        foreach (var light in _lights) {
+            light.Dispose();
+        }
+        
+        _texture.Dispose();
+        _shader.Dispose();
         _audioPlayer.Dispose();
+
         base.OnUnload();
     }
 

@@ -123,4 +123,8 @@ public class Shader {
         SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(12.5f)));
         SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(17.5f)));
     }
+    
+    public void Dispose() {
+        GL.DeleteProgram(_handle);
+    }
 }
