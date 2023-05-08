@@ -20,7 +20,7 @@ public class Camera {
     private float _yaw = -MathHelper.PiOver2;
     private float _fov = MathHelper.PiOver2;
 
-    private const float Speed = 1.5f;
+    private const float Speed = 3.0f;
     private const float Sensitivity = 0.2f;
 
     public Camera(Vector3 position, float aspectRatio) {
