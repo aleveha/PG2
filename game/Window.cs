@@ -75,6 +75,8 @@ public class Window : GameWindow {
     private Shader _lampShader;
 
     private Texture _texture;
+    
+    private AudioPlayer _audioPlayer;
 
     private Camera _camera;
     private bool _firstMove = true;
@@ -129,9 +131,20 @@ public class Window : GameWindow {
         foreach (var _ in _pointLightPositions) {
             _lights.Add(new Mesh(_lampShader, "../../../Objects/sphere.obj"));
         }
+        
+        // AudioPlayer init
+        _audioPlayer = new AudioPlayer();
+        _audioPlayer.Load("../../../Music/Background.wav");
+        _audioPlayer.Play();
 
         // Swap front and back buffers.
         SwapBuffers();
+    }
+    
+    protected override void OnUnload() {
+        // тут напиши своё а я остальное добавлю
+        _audioPlayer.Dispose();
+        base.OnUnload();
     }
 
     protected override void OnRenderFrame(FrameEventArgs e) {
