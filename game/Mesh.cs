@@ -80,7 +80,7 @@ public class Mesh {
         GL.VertexAttribPointer(normalLocation, 3, VertexAttribPointerType.Float, false, vertexSize,
             Marshal.OffsetOf<Vertex>(nameof(Vertex.Normal)));
 
-        var texCoordLocation = _shader.GetAttribLocation("aTexCoord");
+        var texCoordLocation = _shader.GetAttribLocation("aTexCoords");
         GL.EnableVertexAttribArray(texCoordLocation);
         GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, vertexSize,
             Marshal.OffsetOf<Vertex>(nameof(Vertex.TexCoords)));
