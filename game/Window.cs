@@ -56,25 +56,28 @@ public class Window : GameWindow {
     };
 
     private readonly Vector3[] _objectsPositions = {
-        new(4.0f, 0.0f, 0.0f),
-        new(0.0f, 0.0f, 4.0f),
-        new(-4.0f, 0.0f, 0.0f),
-        new(0.0f, 0.0f, -4.0f),
-        new(3.0f, 0.0f, 3.0f),
-        new(3.0f, 0.0f, -3.0f),
-        new(-3.0f, 0.0f, -3.0f),
-        new(-3.0f, 0.0f, 3.0f),
+        new(4.0f, 0.5f, 0.0f),
+        new(0.0f, 1.0f, 4.0f),
+        new(-4.0f, 1.5f, 0.0f),
+        new(0.0f, 2.0f, -4.0f),
+        new(3.0f, -0.5f, 3.0f),
+        new(3.0f, -1.0f, -3.0f),
+        new(-3.0f, -1.5f, -3.0f),
+        new(-3.0f, -2.0f, 3.0f),
     };
 
     // We need the point lights' positions to draw the lamps and to get light the materials properly
     private readonly Vector3[] _pointLightPositions = {
         new(0.0f, 0.0f, 0.0f),
+        new(7.0f, 1.0f, 0.0f),
+        new(-5.0f, 1.0f, -5.0f),
+        new(-5.0f, 1.0f, 5.0f),
     };
+
+    private readonly List<Texture> _textures = new();
 
     private Shader _shader;
     private Shader _lampShader;
-
-    private Texture _texture;
 
     private AudioPlayer _audioPlayer;
 
@@ -114,19 +117,14 @@ public class Window : GameWindow {
         _shader = new Shader("../../../Shaders/shader.vert", "../../../Shaders/lighting.frag");
         _lampShader = new Shader("../../../Shaders/shader.vert", "../../../Shaders/shader.frag");
 
-        _texture = Texture.LoadFromFile("../../../Textures/mercury.jpg");
-
         _camera = new Camera(new Vector3(0.0f, 5.0f, 13.0f), Size.X / (float)Size.Y);
 
         // Create figures meshes
-        foreach (var _ in _objectsPositions) {
-            // _figures.Add(new Mesh(_shader, _vertices, _texture));
-            _figures.Add(new Mesh(_shader, "../../../Objects/sphere.obj", _texture));
+        for (var i = 0; i < _objectsPositions.Length; i++) {
+            _textures.Add(Texture.LoadFromFile($"../../../Textures/{i}.jpg"));
+            _figures.Add(new Mesh(_shader, _vertices, _textures[i]));
+            // _figures.Add(new Mesh(_shader, "../../../Objects/cube.obj", _textures[i]));
         }
-
-        // different texture example
-        _figures[0] = new Mesh(_shader, "../../../Objects/sphere.obj",
-            Texture.LoadFromFile("../../../Textures/duck.jpg"));
 
         // Create lights meshes
         foreach (var _ in _pointLightPositions) {
@@ -146,12 +144,15 @@ public class Window : GameWindow {
         foreach (var figure in _figures) {
             figure.Dispose();
         }
-        
+
         foreach (var light in _lights) {
             light.Dispose();
         }
-        
-        _texture.Dispose();
+
+        foreach (var texture in _textures) {
+            texture.Dispose();
+        }
+
         _shader.Dispose();
         _audioPlayer.Dispose();
 
@@ -170,8 +171,8 @@ public class Window : GameWindow {
 
         // Draw cubes
         for (var i = 0; i < _objectsPositions.Length; i++) {
-            var model = Matrix4.CreateScale(0.4f);
-            model *= Matrix4.CreateTranslation(_objectsPositions[i] * 1.5f);
+            var model = Matrix4.CreateTranslation(_objectsPositions[i]);
+            model *= Matrix4.CreateFromAxisAngle(_objectsPositions[i], 20.0f * i);
             _figures[i].Draw(_camera, model);
 
             _objectsPositions[i] = Vector3.Transform(_objectsPositions[i],
@@ -180,8 +181,7 @@ public class Window : GameWindow {
 
         // Draw lights
         for (var i = 0; i < _pointLightPositions.Length; i++) {
-            var model = Matrix4.CreateScale(0.3f);
-            model *= Matrix4.CreateTranslation(_pointLightPositions[i]);
+            var model = Matrix4.CreateScale(0.1f) * Matrix4.CreateTranslation(_pointLightPositions[i]);
             _lights[i].Draw(_camera, model);
         }
 
